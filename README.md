@@ -1,6 +1,8 @@
 ## js2pdf
 
-Really simple Python script for injecting JS into a PDF.
+Really simple Python script for injecting JavaScript into a PDF.
+
+The JavaScript should run in most viewers/browsers when the PDF is opened.
 
 ```
 usage: script.py path/to/pdf.pdf path/to/javascript.js
