@@ -1,21 +1,22 @@
-import sys
+import argparse
 from PyPDF2 import PdfWriter, PdfReader
 
-if len(sys.argv) not in [3, 4, 5] or (len(sys.argv) == 4 and sys.argv[3] != "-O") or (len(sys.argv) == 5 and sys.argv[3] != "-o"):
-	print("usage: script.py path/to/pdf.pdf path/to/javascript.js")
-	print("options:")
-	print("  -o	to specify a different output file (example: -o path/to/output.pdf)")
-	print("  -O	to overwrite the input PDF (by default, the new PDF is named using the old filename prefixed with \"new_\")")
-	exit()
+parser = argparse.ArgumentParser()
+parser.add_argument('pdf', help='path to the input PDF file.')
+parser.add_argument('javascript', help='path to the input JavaScript file.')
+parser.add_argument('-o', '--output', help='specify an output PDF filename. by default, the new PDF is named using the old filename prefixed with "new_".')
+parser.add_argument('-w', '--overwrite', action='store_true', help='overwrite the input PDF. This option ignores the -o/--output option.')
+args = parser.parse_args()
+if args.overwrite and args.output: parser.error("the -w/--overwrite option is incompatible with the -o/--output option.")
 
-reader = PdfReader(open(sys.argv[1], 'rb'))
-script = open(sys.argv[2], 'r').read()
-if len(sys.argv) == 3: filename = "new_" + sys.argv[1]	# Default filename is just the input filename with new_ prepended
-elif len(sys.argv) == 4: filename = sys.argv[1] 		# If the -O flag has been used, our output filename is the input filename
-elif len(sys.argv) == 5: filename = sys.argv[4] 		# If the -o flag has been used, our output filename is the provided filename
+reader = PdfReader(open(args.pdf, 'rb'))
+script = open(args.javascript, 'r').read()
+if args.overwrite: filename = args.pdf
+elif args.output: filename = args.output
+else: filename = "new_" + args.pdf
 
 output = PdfWriter()
 output.append_pages_from_reader(reader)
 output.add_js(script)
 output.write(open(filename, 'wb'))
-print(f"Successfully injected {sys.argv[2]} into {sys.argv[1]}. Output file: {filename}")
+print(f"Successfully injected {args.javascript} into {args.pdf}. Output file: {filename}")
