@@ -8,9 +8,8 @@ Really simple Python script for injecting JavaScript into a PDF. The JavaScript 
 usage: js2pdf.py path/to/pdf.pdf path/to/javascript.js
 
 optional arguments:
-  -o OUTPUT, --output OUTPUT
-                        specify an output PDF filename. by default, the new PDF is named using the old filename prefixed with "new_".
-  -w, --overwrite       overwrite the input PDF. This option ignores the -o/--output option.
+  -o OUTPUT, --output OUTPUT      specify an output PDF filename. by default, the new PDF is named using the old filename prefixed with "new_".
+  -w, --overwrite      overwrite the input PDF. this option ignores the -o/--output option.
 ```
 
 ### Example
