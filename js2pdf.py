@@ -12,9 +12,10 @@ reader = PdfReader(open(sys.argv[1], 'rb'))
 script = open(sys.argv[2], 'r').read()
 if len(sys.argv) == 3: filename = "new_" + sys.argv[1]	# Default filename is just the input filename with new_ prepended
 elif len(sys.argv) == 4: filename = sys.argv[1] 		# If the -O flag has been used, our output filename is the input filename
-elif len(sys.argv) == 5: filename = sys.argv[4] 		# If the -o flag has been used, our output filename to the provided filename
+elif len(sys.argv) == 5: filename = sys.argv[4] 		# If the -o flag has been used, our output filename is the provided filename
 
 output = PdfWriter()
 output.append_pages_from_reader(reader)
 output.add_js(script)
 output.write(open(filename, 'wb'))
+print(f"Successfully injected {sys.argv[2]} into {sys.argv[1]}. Output file: {filename}")
