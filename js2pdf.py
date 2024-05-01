@@ -1,4 +1,5 @@
 import argparse
+import os
 from PyPDF2 import PdfWriter, PdfReader
 
 parser = argparse.ArgumentParser()
@@ -13,10 +14,11 @@ reader = PdfReader(open(args.pdf, 'rb'))
 script = open(args.javascript, 'r').read()
 if args.overwrite: filename = args.pdf
 elif args.output: filename = args.output
-else: filename = "new_" + args.pdf
+else: filename = os.path.dirname(args.pdf) + "/new_" + os.path.basename(args.pdf)
 
 output = PdfWriter()
 output.append_pages_from_reader(reader)
 output.add_js(script)
 output.write(open(filename, 'wb'))
 print(f"Successfully injected {args.javascript} into {args.pdf}. Output file: {filename}")
+
